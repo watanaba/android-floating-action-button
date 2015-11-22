@@ -10,6 +10,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.ContextThemeWrapper;
 import android.view.TouchDelegate;
@@ -20,6 +21,8 @@ import android.view.animation.Interpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
 
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorListenerAdapter;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.view.ViewHelper;
@@ -471,12 +474,29 @@ public class FloatingActionsMenu extends ViewGroup {
 
       // Now that the animations have targets, set them to be played
       if (!animationsSetToPlay) {
+        addLayerTypeListener(mExpandDir, view);
+        addLayerTypeListener(mCollapseDir, view);
+
         mCollapseAnimation.play(mCollapseAlpha);
         mCollapseAnimation.play(mCollapseDir);
         mExpandAnimation.play(mExpandAlpha);
         mExpandAnimation.play(mExpandDir);
         animationsSetToPlay = true;
       }
+    }
+
+    private void addLayerTypeListener(Animator animator, final View view) {
+      animator.addListener(new AnimatorListenerAdapter() {
+        @Override
+        public void onAnimationEnd(Animator animation) {
+          ViewCompat.setLayerType(view, ViewCompat.LAYER_TYPE_NONE, null);
+        }
+
+        @Override
+        public void onAnimationStart(Animator animation) {
+          ViewCompat.setLayerType(view, ViewCompat.LAYER_TYPE_HARDWARE, null);
+        }
+      });
     }
   }
 
