@@ -1,4 +1,4 @@
-package net.i2p.android.ext.floatingactionbutton;
+package uk.co.earlycross.floatingactionbutton;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

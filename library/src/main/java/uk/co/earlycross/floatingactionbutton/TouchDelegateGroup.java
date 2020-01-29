@@ -1,4 +1,4 @@
-package net.i2p.android.ext.floatingactionbutton;
+package uk.co.earlycross.floatingactionbutton;
 
 import android.graphics.Rect;
 import android.support.annotation.NonNull;

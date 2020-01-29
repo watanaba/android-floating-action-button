@@ -1,7 +1,7 @@
-package net.i2p.android.ext.floatingactionbutton.sample;
+package uk.co.earlycross.floatingactionbutton.sample;
 
-import net.i2p.android.ext.floatingactionbutton.FloatingActionButton;
-import net.i2p.android.ext.floatingactionbutton.FloatingActionsMenu;
+import uk.co.earlycross.floatingactionbutton.FloatingActionButton;
+import uk.co.earlycross.floatingactionbutton.FloatingActionsMenu;
 
 import android.app.Activity;
 import android.graphics.drawable.ShapeDrawable;
