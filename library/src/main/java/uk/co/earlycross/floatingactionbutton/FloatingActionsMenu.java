@@ -46,6 +46,7 @@ public class FloatingActionsMenu extends ViewGroup {
   private int mAddButtonSize;
   private boolean mAddButtonStrokeVisible;
   private int mExpandDirection;
+  private boolean mNoIcon;
 
   private int mButtonSpacing;
   private int mLabelsMargin;
@@ -103,6 +104,7 @@ public class FloatingActionsMenu extends ViewGroup {
     mExpandDirection = attr.getInt(R.styleable.FloatingActionsMenu_fab_expandDirection, EXPAND_UP);
     mLabelsStyle = attr.getResourceId(R.styleable.FloatingActionsMenu_fab_labelStyle, 0);
     mLabelsPosition = attr.getInt(R.styleable.FloatingActionsMenu_fab_labelsPosition, LABELS_ON_LEFT_SIDE);
+    mNoIcon = attr.getBoolean(R.styleable.FloatingActionsMenu_fab_noIcon, false);
     attr.recycle();
 
     if (mLabelsStyle != 0 && expandsHorizontally()) {
@@ -289,16 +291,32 @@ public class FloatingActionsMenu extends ViewGroup {
 
       int addButtonY = expandUp ? b - t - mAddButton.getMeasuredHeight() : 0;
       // Ensure mAddButton is centered on the line where the buttons should be
-      int buttonsHorizontalCenter = mLabelsPosition == LABELS_ON_LEFT_SIDE
-          ? r - l - mMaxButtonWidth / 2
-          : mMaxButtonWidth / 2;
-      int addButtonLeft = buttonsHorizontalCenter - mAddButton.getMeasuredWidth() / 2;
+      int buttonsHorizontalCenter;
+      if (!mNoIcon) {
+        buttonsHorizontalCenter = mLabelsPosition == LABELS_ON_LEFT_SIDE
+                ? r - l - mMaxButtonWidth / 2
+                : mMaxButtonWidth / 2;
+      } else {
+        buttonsHorizontalCenter = mLabelsPosition == LABELS_ON_LEFT_SIDE
+                ? r - l
+                : 0;
+      }
+      int addButtonLeft = 0;
+      if (!mNoIcon) {
+        addButtonLeft = buttonsHorizontalCenter - mAddButton.getMeasuredWidth() / 2;
+      }
       mAddButton.layout(addButtonLeft, addButtonY, addButtonLeft + mAddButton.getMeasuredWidth(), addButtonY + mAddButton.getMeasuredHeight());
 
       int labelsOffset = mMaxButtonWidth / 2 + mLabelsMargin;
-      int labelsXNearButton = mLabelsPosition == LABELS_ON_LEFT_SIDE
-          ? buttonsHorizontalCenter - labelsOffset
-          : buttonsHorizontalCenter + labelsOffset;
+
+      int labelsXNearButton;
+      if (!mNoIcon) {
+        labelsXNearButton = mLabelsPosition == LABELS_ON_LEFT_SIDE
+                ? buttonsHorizontalCenter - labelsOffset
+                : buttonsHorizontalCenter + labelsOffset;
+      } else {
+        labelsXNearButton = buttonsHorizontalCenter;
+      }
 
       int nextY = expandUp ?
           addButtonY - mButtonSpacing :

@@ -36,9 +36,10 @@ public class FloatingActionButton extends ImageButton {
 
   public static final int SIZE_NORMAL = 0;
   public static final int SIZE_MINI = 1;
+  public static final int SIZE_HIDE = 2;
 
   @Retention(RetentionPolicy.SOURCE)
-  @IntDef({ SIZE_NORMAL, SIZE_MINI })
+  @IntDef({ SIZE_NORMAL, SIZE_MINI, SIZE_HIDE })
   public @interface FAB_SIZE {
   }
 
@@ -99,7 +100,7 @@ public class FloatingActionButton extends ImageButton {
   }
 
   public void setSize(@FAB_SIZE int size) {
-    if (size != SIZE_MINI && size != SIZE_NORMAL) {
+    if (size != SIZE_MINI && size != SIZE_NORMAL && size != SIZE_HIDE) {
       throw new IllegalArgumentException("Use @FAB_SIZE constants only!");
     }
 
@@ -231,13 +232,15 @@ public class FloatingActionButton extends ImageButton {
     final float strokeWidth = getDimension(R.dimen.fab_stroke_width);
     final float halfStrokeWidth = strokeWidth / 2f;
 
-    LayerDrawable layerDrawable = new LayerDrawable(
-        new Drawable[] {
+    if (mSize == SIZE_HIDE) {
+      return;
+    }
+    LayerDrawable layerDrawable = new LayerDrawable(new Drawable[] {
             getResources().getDrawable(mSize == SIZE_NORMAL ? R.drawable.fab_bg_normal : R.drawable.fab_bg_mini),
             createFillDrawable(strokeWidth),
             createOuterStrokeDrawable(strokeWidth),
             getIconDrawable()
-        });
+    });
 
     int iconOffset = (int) (mCircleSize - getDimension(R.dimen.fab_icon_size)) / 2;
 
